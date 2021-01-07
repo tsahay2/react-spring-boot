@@ -1,0 +1,4 @@
+info.app:
+    info: Spring Boot With React
+server:
+  port: 8080
