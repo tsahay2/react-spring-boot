@@ -5,6 +5,8 @@ target/
 !**/src/test/**/target/
 
 ### STS ###
+.eslintcache
+package-lock.json
 .apt_generated
 .classpath
 .factorypath
