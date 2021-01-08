@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './home-page.scss'
-import faker from 'faker'
-import {Grid, GridColumn, Header, Input,Row} from 'semantic-ui-react'
-import WordContainerComponent from "../../components/words-container-component/WordContainerComponent";
+import {Form, FormButton, Grid, Input} from 'semantic-ui-react'
 
 export class HomePage extends Component {
 
@@ -10,8 +8,9 @@ export class HomePage extends Component {
         super(props);
         this.dynamicSearch = this.dynamicSearch.bind(this)
         this.editSearchTerm = this.editSearchTerm.bind(this)
+        this.getResults = this.getResults.bind(this)
     }
-    
+
     state = {
         words: [
             'bottle',
@@ -37,28 +36,38 @@ export class HomePage extends Component {
     }
 
     dynamicSearch = () => {
-        return this.state.searchTerm?this.state.words.filter(word => word.toLowerCase().includes(this.state.searchTerm.toLowerCase())):['']
+        return this.state.searchTerm ? this.state.words.filter(word => word.toLowerCase().includes(this.state.searchTerm.toLowerCase())) : ['']
+    }
+
+    getResults = (e,{formData}) => {
+        console.log('Search word is '+this.state.searchTerm)
+    }
+
+    handleTextChange = (e) => {
+        this.setState({
+            searchTerm: e.target.value
+        })
     }
 
     render() {
         return (
             <div className="page-wrapper">
-                <Grid>
+                <Grid columns={1}>
                     <Grid.Row>
-                    <Grid.Column width={5}>
-                <div className="main-text">
-                    <Header as='h1'>Sex with me is like </Header>
-                </div>
-                    </Grid.Column>
-                        <Grid.Column width={6}>
-                            <Input onChange={this.editSearchTerm} placeholder='enter object..'/>
-                        </Grid.Column>
+                            <Grid.Column>
+                                <Form onSubmit={this.getResults}>
+                                    <Form.Field inline>
+                                        <label>Sex with me is like</label>
+                                        <Input list='words' name= 'selected_word' value={this.state.searchTerm} onChange={this.handleTextChange} placeholder='Choose language...' />
+                                        <datalist id='words'>
+                                            {this.state.words.map(word => <option value ={word}>{word}</option>)}
+                                        </datalist>
+                                    </Form.Field>
+                                    <FormButton inline type='submit'>Submit</FormButton>
+                                </Form>
+                                </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row>
-                        <WordContainerComponent words={this.dynamicSearch()}/>
-                    </Grid.Row>
-                    </Grid>
-
+                </Grid>
             </div>
         )
     }
